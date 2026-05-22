@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)file:///Users/rRamses/Downloads/Villa_Kamerindeling_5.html -->
+<html lang="nl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Kamerindeling</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #ffffff; }
+    h1 { text-align: center; color: #0C447C; margin-bottom: 16px; }
+    .instructions { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; color: #333; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .room { background: white; border: 2px solid #378ADD; border-radius: 10px; padding: 10px; min-height: 140px; }
+    .room h2 { margin-top: 0; font-size: 16px; font-weight: bold; text-align: center; color: #333; background: white; border-radius: 6px; padding: 5px 0; margin-bottom: 8px; }
+    .bed { background: #E6F1FB; border: 1px solid #85B7EB; border-radius: 8px; padding: 8px 10px; margin: 6px 0; cursor: move; text-align: center; display: flex; align-items: center; gap: 8px; }
+    .bed .icon { font-size: 16px; flex-shrink: 0; }
+    .bed input { flex: 1; border: none; background: transparent; text-align: center; font-size: 14px; color: #0C447C; font-family: Arial, sans-serif; }
+    .bed input:focus { outline: none; background: white; border-radius: 4px; }
+    .room.dragover { border-color: #0C447C; background: #f0f7ff; }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>Villa Kamerindeling — Familie Shepherd</h1>
+
+<div class="instructions">
+    <strong>Gebruik:</strong>
+    <ul>
+        <li>Klik op een naam om deze aan te passen.</li>
+        <li>Sleep een bed naar een andere kamer om de indeling te wijzigen.</li>
+    </ul>
+</div>
+
+<div class="grid" id="rooms">
+
+  <div class="room" data-room="1">
+    <h2>Kamer 1</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Ramses"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Conchata"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Angelina"></div>
+  </div>
+
+  <div class="room" data-room="2">
+    <h2>Kamer 2</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Djeyfano"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Valentino"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Michael"></div>
+  </div>
+
+  <div class="room" data-room="3">
+    <h2>Kamer 3</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Jermaine"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Onyx"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Jaydiën"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Zoë"></div>
+  </div>
+
+  <div class="room" data-room="4">
+    <h2>Kamer 4</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Marlo"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Marella"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Marilva"></div>
+  </div>
+
+  <div class="room" data-room="5">
+    <h2>Kamer 5</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Leroy"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Eliza"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Joah"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Jaïr"></div>
+  </div>
+
+  <div class="room" data-room="6">
+    <h2>Kamer 6</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Graigney"></div>
+  </div>
+
+  <div class="room" data-room="7">
+    <h2>Kamer 7</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Diego"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Myrthe"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Isabel"></div>
+  </div>
+
+  <div class="room" data-room="8">
+    <h2>Kamer 8</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Julian"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Milan"></div>
+  </div>
+
+  <div class="room" data-room="9">
+    <h2>Kamer 9</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Sefanya"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Ayden"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Cillencio"></div>
+  </div>
+
+  <div class="room" data-room="10">
+    <h2>Kamer 10</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Wendy"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Melody"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Sara"></div>
+  </div>
+
+  <div class="room" data-room="11">
+    <h2>Kamer 11</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Roël"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Rebekka"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Jaylen"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Shai"></div>
+  </div>
+
+  <div class="room" data-room="12">
+    <h2>Kamer 12</h2>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Sherejaine"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Salora"></div>
+    <div class="bed" draggable="true"><span class="icon">🛏️</span><input type="text" value="Saraphina"></div>
+  </div>
+
+</div>
+
+<script>
+let dragged = null;
+
+document.querySelectorAll('.bed').forEach(bed => {
+    bed.addEventListener('dragstart', function() { dragged = this; });
+});
+
+document.querySelectorAll('.room').forEach(room => {
+    room.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+    room.addEventListener('dragleave', function() { this.classList.remove('dragover'); });
+    room.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        if (dragged) this.appendChild(dragged);
+    });
+});
+</script>
+
+
+
+</body></html>
