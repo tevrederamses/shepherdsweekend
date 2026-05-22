@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekend Familie Shepherd — 29–31 mei 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.18);
+    --text: #1A1916;
+    --muted: #6B6860;
+    --hint: #A09D98;
+    --accent: #2D5A3D;
+    --accent-bg: #E8F0EB;
+    --accent-text: #1A3D26;
+    --warn: #7A4A10;
+    --warn-bg: #FBF0E0;
+    --danger: #8B2020;
+    --danger-bg: #FDF0F0;
+    --tag-purple: #EEEDFE; --tag-purple-t: #3C3489;
+    --tag-teal: #E1F5EE; --tag-teal-t: #085041;
+    --tag-amber: #FAEEDA; --tag-amber-t: #633806;
+    --tag-coral: #FAECE7; --tag-coral-t: #712B13;
+    --tag-blue: #E6F1FB; --tag-blue-t: #0C447C;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 28px 16px; }
+  .header-top { display: flex; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .header-title h1 { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; color: var(--text); }
+  .header-title p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .header-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; }
+  .badge i { font-size: 13px; }
+  .badge-purple { background: var(--tag-purple); color: var(--tag-purple-t); }
+  .badge-teal { background: var(--tag-teal); color: var(--tag-teal-t); }
+  .badge-amber { background: var(--tag-amber); color: var(--tag-amber-t); }
+  .badge-coral { background: var(--tag-coral); color: var(--tag-coral-t); }
+  .badge-blue { background: var(--tag-blue); color: var(--tag-blue-t); }
+
+  .progress-strip { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 28px; display: flex; align-items: center; gap: 16px; }
+  .progress-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .progress-label { font-size: 13px; color: var(--muted); min-width: 60px; text-align: right; }
+  .stats { display: flex; gap: 20px; }
+  .stat { text-align: center; }
+  .stat-n { font-size: 18px; font-weight: 500; color: var(--text); }
+  .stat-l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .main { display: grid; grid-template-columns: 1fr; gap: 0; min-height: calc(100vh - 140px); }
+  .col { padding: 20px 28px; }
+  .col-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--hint); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+
+  /* Sections / Checklist */
+  .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+  .section-head { display: flex; align-items: center; gap: 10px; padding: 11px 14px; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .section-head:hover { background: var(--bg); }
+  .section-icon { font-size: 16px; color: var(--muted); }
+  .section-name { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
+  .section-prog { font-size: 12px; color: var(--hint); }
+  .mini-bar { width: 44px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .mini-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+  .chevron-icon { font-size: 14px; color: var(--hint); transition: transform 0.2s; }
+  .chevron-icon.open { transform: rotate(180deg); }
+  .section-items { display: none; border-top: 1px solid var(--border); }
+  .section-items.open { display: block; }
+  .chk-item { display: flex; align-items: flex-start; gap: 11px; padding: 9px 14px; cursor: pointer; transition: background 0.12s; border-bottom: 1px solid var(--border); }
+  .chk-item:last-of-type { border-bottom: none; }
+  .chk-item:hover { background: var(--bg); }
+  .chk-item.done { opacity: 0.5; }
+  .chk-item.done .chk-label { text-decoration: line-through; color: var(--hint); }
+  .chk-box { width: 17px; height: 17px; min-width: 17px; border: 1.5px solid var(--border-strong); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.15s; }
+  .chk-box.checked { background: var(--accent); border-color: var(--accent); }
+  .chk-box.checked::after { content: ''; width: 4px; height: 8px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg) translateY(-1px); display: block; }
+  .chk-label { font-size: 13.5px; color: var(--text); }
+  .chk-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .chk-del { font-size: 14px; color: var(--hint); margin-left: auto; opacity: 0; transition: opacity 0.15s; cursor: pointer; padding: 2px; }
+  .chk-item:hover .chk-del { opacity: 1; }
+  .chk-del:hover { color: var(--danger); }
+
+  .add-item-row { display: flex; gap: 6px; padding: 8px 14px; border-top: 1px solid var(--border); }
+  .add-item-row input { flex: 1; font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--bg); color: var(--text); outline: none; }
+  .add-item-row input:focus { border-color: var(--accent); background: var(--surface); }
+  .btn-add-item { background: var(--accent-bg); border: none; color: var(--accent-text); font-size: 13px; font-weight: 500; border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+  .btn-add-item:hover { background: #d2e5d8; }
+
+  .btn-add-section { width: 100%; background: var(--surface); border: 1.5px dashed var(--border-strong); border-radius: var(--radius); padding: 10px; font-size: 13px; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; font-family: inherit; }
+  .btn-add-section:hover { background: var(--bg); color: var(--text); }
+  .add-section-form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-top: 4px; display: none; }
+  .add-section-form.open { display: block; }
+  .form-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .form-row:last-child { margin-bottom: 0; }
+  .form-row input, .form-row select { flex: 1; font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; background: var(--bg); color: var(--text); outline: none; }
+  .form-row input:focus, .form-row select:focus { border-color: var(--accent); }
+  .btn-confirm { background: var(--accent); border: none; color: white; font-size: 13px; font-weight: 500; border-radius: var(--radius-sm); padding: 7px 14px; cursor: pointer; font-family: inherit; }
+  .btn-cancel { background: transparent; border: 1px solid var(--border-strong); color: var(--muted); font-size: 13px; border-radius: var(--radius-sm); padding: 7px 14px; cursor: pointer; font-family: inherit; }
+
+  /* Grocery list */
+  .grocery-cat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+  .grocery-cat-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; cursor: pointer; transition: background 0.15s; }
+  .grocery-cat-head:hover { background: var(--bg); }
+  .grocery-cat-name { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
+  .grocery-count { font-size: 12px; color: var(--hint); }
+  .grocery-items { display: none; border-top: 1px solid var(--border); }
+  .grocery-items.open { display: block; }
+  .grocery-item { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--border); transition: background 0.12s; }
+  .grocery-item:last-of-type { border-bottom: none; }
+  .grocery-item:hover { background: var(--bg); }
+  .grocery-item.done { opacity: 0.45; }
+  .grocery-item.done .gitem-name { text-decoration: line-through; color: var(--hint); }
+  .gitem-name { flex: 1; font-size: 13.5px; color: var(--text); cursor: pointer; }
+  .gitem-qty { font-size: 12px; color: var(--muted); min-width: 60px; text-align: right; cursor: pointer; }
+  .gitem-edit { display: none; }
+  .grocery-item.editing .gitem-name, .grocery-item.editing .gitem-qty { display: none; }
+  .grocery-item.editing .gitem-edit { display: flex; flex: 1; gap: 6px; align-items: center; }
+  .gitem-edit input { font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 8px; background: var(--bg); color: var(--text); outline: none; }
+  .gitem-edit input:focus { border-color: var(--accent); }
+  .gitem-edit input.name-in { flex: 1; }
+  .gitem-edit input.qty-in { width: 80px; }
+  .gitem-edit button { background: var(--accent-bg); border: none; color: var(--accent-text); font-size: 12px; border-radius: var(--radius-sm); padding: 4px 8px; cursor: pointer; font-family: inherit; }
+  .g-del { font-size: 14px; color: var(--hint); cursor: pointer; opacity: 0; transition: opacity 0.15s; }
+  .grocery-item:hover .g-del { opacity: 1; }
+  .g-del:hover { color: var(--danger); }
+  .add-grocery-row { display: flex; gap: 6px; padding: 8px 14px; border-top: 1px solid var(--border); }
+  .add-grocery-row input { font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--bg); color: var(--text); outline: none; }
+  .add-grocery-row input:focus { border-color: var(--accent); }
+  .add-grocery-row input.name-in { flex: 1; }
+  .add-grocery-row input.qty-in { width: 90px; }
+  .add-grocery-row button { background: var(--accent-bg); border: none; color: var(--accent-text); font-size: 13px; font-weight: 500; border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer; font-family: inherit; }
+  .add-grocery-row button:hover { background: #d2e5d8; }
+
+  .btn-add-cat { width: 100%; background: var(--surface); border: 1.5px dashed var(--border-strong); border-radius: var(--radius); padding: 10px; font-size: 13px; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; font-family: inherit; }
+  .btn-add-cat:hover { background: var(--bg); color: var(--text); }
+
+  .grocery-filter { display: flex; gap: 6px; margin-bottom: 12px; }
+  .gfilter-btn { font-family: inherit; font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .gfilter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+  .meeting-box { background: var(--warn-bg); border: 1px solid rgba(122,74,16,0.2); border-radius: var(--radius); padding: 11px 14px; margin-bottom: 16px; font-size: 13px; color: var(--warn); display: flex; align-items: center; gap: 10px; }
+  .meeting-box i { font-size: 16px; }
+
+  .info-section { padding: 20px 28px; border-top: 1px solid var(--border); }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 14px; }
+  .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+  .info-card h3 { font-size: 13px; font-weight: 500; color: var(--accent-text); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .info-card h3 i { font-size: 15px; color: var(--accent); }
+  .info-card p, .info-card li { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .info-card ul { list-style: none; padding: 0; }
+  .info-card ul li { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; }
+  .info-card ul li::before { content: "·"; color: var(--accent); font-weight: bold; margin-top: 1px; }
+  .info-card a { color: var(--accent); text-decoration: none; }
+  .info-card a:hover { text-decoration: underline; }
+  .info-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; background: var(--accent-bg); color: var(--accent-text); margin: 2px 2px 0 0; }
+
+  .save-bar { background: var(--surface); border-top: 1px solid var(--border); padding: 10px 28px; display: flex; align-items: center; gap: 12px; position: sticky; bottom: 0; z-index: 10; }
+  .btn-save { background: var(--accent); border: none; color: white; font-size: 13px; font-weight: 500; border-radius: var(--radius-sm); padding: 8px 20px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+  .btn-save:hover { background: #1e3f2a; }
+  .btn-reset { background: transparent; border: 1px solid var(--border-strong); color: var(--muted); font-size: 13px; border-radius: var(--radius-sm); padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .btn-reset:hover { color: var(--danger); border-color: var(--danger); }
+  .save-status { font-size: 12px; color: var(--muted); flex: 1; }
+  .chk-edit-fields { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .chk-edit-fields input { font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 5px 8px; background: var(--surface); color: var(--text); outline: none; width: 100%; }
+  .chk-edit-fields input:focus { border-color: var(--accent); }
+  .chk-edit-actions { display: flex; gap: 6px; margin-top: 4px; }
+  .chk-edit-save { background: var(--accent); border: none; color: white; font-size: 12px; border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; font-family: inherit; }
+  .chk-edit-cancel { background: transparent; border: 1px solid var(--border-strong); color: var(--muted); font-size: 12px; border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; font-family: inherit; }
+  .chk-edit-icon { font-size: 14px; color: var(--hint); opacity: 0; transition: opacity 0.15s; cursor: pointer; padding: 2px; margin-left: 2px; }
+  .chk-item:hover .chk-edit-icon { opacity: 1; }
+  .chk-edit-icon:hover { color: var(--accent); }
+
+  body.dark {
+    --bg: #1A1917;
+    --surface: #242320;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18);
+    --text: #F0EDE8;
+    --muted: #9A9690;
+    --hint: #6A6760;
+    --accent: #4A8C62;
+    --accent-bg: #1E3528;
+    --accent-text: #8FD4A8;
+    --warn: #C8922A;
+    --warn-bg: #2A1F0E;
+    --danger: #C45C5C;
+    --danger-bg: #2A1010;
+    --tag-purple: #2A2850; --tag-purple-t: #AFA9EC;
+    --tag-teal: #0D2E20; --tag-teal-t: #5DCAA5;
+    --tag-amber: #2A1E08; --tag-amber-t: #EF9F27;
+    --tag-coral: #2A1208; --tag-coral-t: #F0997B;
+    --tag-blue: #0A1E30; --tag-blue-t: #85B7EB;
+  }
+
+  .dark-toggle { background: transparent; border: 1px solid var(--border-strong); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; transition: all 0.15s; margin-left: auto; }
+  .dark-toggle:hover { color: var(--text); border-color: var(--text); }
+
+
+  body.dark {
+    --bg: #1A1917; --surface: #242320; --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18); --text: #F0EDE8; --muted: #9A9690;
+    --hint: #6A6760; --accent: #4A8C62; --accent-bg: #1E3528; --accent-text: #8FD4A8;
+    --warn: #C8922A; --warn-bg: #2A1F0E; --danger: #C45C5C; --danger-bg: #2A1010;
+    --tag-purple: #2A2850; --tag-purple-t: #AFA9EC; --tag-teal: #0D2E20; --tag-teal-t: #5DCAA5;
+    --tag-amber: #2A1E08; --tag-amber-t: #EF9F27; --tag-coral: #2A1208; --tag-coral-t: #F0997B;
+    --tag-blue: #0A1E30; --tag-blue-t: #85B7EB;
+  }
+  .dark-toggle { background: transparent; border: 1px solid var(--border-strong); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+  .dark-toggle:hover { color: var(--text); border-color: var(--text); }
+  .countdown-bar { background: var(--accent-bg); border-bottom: 1px solid var(--border); padding: 10px 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .countdown-units { display: flex; gap: 14px; }
+  .cd-unit { text-align: center; }
+  .cd-n { font-size: 24px; font-weight: 500; color: var(--accent-text); line-height: 1; }
+  .cd-l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .cd-label { font-size: 13px; color: var(--accent-text); font-weight: 500; flex: 1; }
+  .weather-strip { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .weather-day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 13px; flex: 1; min-width: 130px; }
+  .weather-day .wd-label { font-weight: 500; color: var(--text); white-space: nowrap; }
+  .weather-day .wd-icon { font-size: 22px; }
+  .weather-day .wd-temp { color: var(--muted); font-size: 12px; }
+  .day-note { padding: 0 14px 10px; }
+  .day-note label { font-size: 11px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+  .day-note textarea { width: 100%; font-family: inherit; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; background: var(--bg); color: var(--text); resize: vertical; min-height: 58px; outline: none; }
+  .day-note textarea:focus { border-color: var(--accent); background: var(--surface); }
+  .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+  .info-card h3 { font-size: 13px; font-weight: 500; color: var(--accent-text); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .info-card h3 i { font-size: 15px; color: var(--accent); }
+  .info-card p, .info-card li { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .info-card ul { list-style: none; padding: 0; }
+  .info-card ul li { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; }
+  .info-card a { color: var(--accent); text-decoration: none; }
+  .info-card a:hover { text-decoration: underline; }
+
+  @media (max-width: 700px) {
+    .main { grid-template-columns: 1fr; }
+    .col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    header { padding: 16px 16px 12px; }
+    .col { padding: 16px; }
+    .progress-strip { padding: 10px 16px; }
+  }
+</style>
+</head>
+<body class="dark">
+
+<header>
+  <div class="header-top">
+    <div class="header-title">
+      <h1>Weekend familie Shepherd</h1>
+      <p>Villa · 12 kamers · vrijdag 29 t/m maandag 31 mei 2026</p>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px;"><button class="dark-toggle" onclick="toggleDark()" id="dark-btn"><i class="ti ti-sun"></i> Licht</button></div>
+  <div class="header-badges">
+    <span class="badge badge-purple"><i class="ti ti-home" aria-hidden="true"></i> Check-in vr 16:00</span>
+    <span class="badge badge-teal"><i class="ti ti-door-exit" aria-hidden="true"></i> Checkout ma 10:00</span>
+
+  </div>
+</header>
+
+<div class="countdown-bar" id="countdown-bar">
+  <span class="cd-label"><i class="ti ti-rocket"></i> Nog tot vertrek op vrijdag 29 mei 16:00</span>
+  <div class="countdown-units">
+    <div class="cd-unit"><div class="cd-n" id="cd-days">-</div><div class="cd-l">dagen</div></div>
+    <div class="cd-unit"><div class="cd-n" id="cd-hours">-</div><div class="cd-l">uur</div></div>
+    <div class="cd-unit"><div class="cd-n" id="cd-mins">-</div><div class="cd-l">min</div></div>
+  </div>
+</div>
+
+<div style="padding:12px 28px 0;">
+  <div class="section-card" style="margin-bottom:10px;">
+    <div class="section-head" onclick="toggleWeather(this)">
+      <i class="ti ti-cloud section-icon"></i>
+      <span class="section-name">Weer dit weekend — Gasselternijveen</span>
+      <i class="ti ti-chevron-down chevron-icon open"></i>
+    </div>
+    <div id="weather-body" style="padding:12px 16px;border-top:1px solid var(--border);">
+      <div id="weather-loading" style="font-size:13px;color:var(--muted)">Weer ophalen...</div>
+      <div class="weather-strip" id="weather-strip" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<div class="info-section" style="padding:12px 28px 0;">
+  <div class="section-card" style="margin-bottom:10px;">
+    <div class="section-head" onclick="toggleInfo(this)">
+      <i class="ti ti-info-circle section-icon" aria-hidden="true"></i>
+      <span class="section-name">Parkinfo — Landal Hunzepark</span>
+      <i class="ti ti-chevron-down chevron-icon open" aria-hidden="true"></i>
+    </div>
+    <div class="info-grid open" id="info-grid" style="display:grid; padding:14px 16px; border-top:1px solid var(--border);">
+
+    <div class="info-card">
+      <h3><i class="ti ti-map-pin"></i> Adres & contact</h3>
+      <ul>
+        <li>Hunzepark 4, 9514 BW Gasselternijveen</li>
+        <li><a href="tel:+31599512479">+31 (0)599-512479</a></li>
+        <li><a href="https://www.landal.nl/parken/hunzepark" target="_blank">landal.nl/parken/hunzepark</a></li>
+        <li><a href="https://www.google.com/maps/dir/?api=1&destination=Hunzepark+4,+9514+BW+Gasselternijveen" target="_blank">🗺️ Navigeer via Google Maps</a></li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="ti ti-clock"></i> Receptie op 29 mei</h3>
+      <ul>
+        <li>Donderdag 29 mei: <strong>09:00–17:00</strong></li>
+        <li>Check-in: <strong>vanaf 16:00</strong></li>
+        <li>Checkout maandag: <strong>voor 10:00</strong></li>
+      </ul>
+      <p style="margin-top:6px; font-size:12px; color:var(--hint)">Receptie is open bij aankomst ✓</p>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="ti ti-swimming"></i> Zwemmen</h3>
+      <ul>
+        <li>Verwarmd openluchtzwembad (mei t/m sept)</li>
+        <li>Duikplank & ligweide aanwezig</li>
+        <li>Overdekt zwemparadijs op nabijgelegen Hunzedal (buiten zomermaanden)</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="ti ti-kayak"></i> Activiteiten op het park</h3>
+      <ul>
+        <li>Kanovaren & vlotten bouwen</li>
+        <li>Klimmen, boogschieten & stormbaan</li>
+        <li>Beachvolleybal & tafeltennis</li>
+        <li>Vissen & golfen & tennissen</li>
+        <li>SUP, waterfiets & fiets huren</li>
+      </ul>
+      <p style="font-size:12px; color:var(--hint); margin-top:4px">Activiteiten via HunzeOutdoor, v.a. 6 jaar</p>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="ti ti-tools-kitchen-2"></i> Eten & drinken</h3>
+      <ul>
+        <li>HunzeCafé: friet & snacks (apr–okt)</li>
+        <li>Terras met uitzicht op kanovijver</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="ti ti-trees"></i> Omgeving</h3>
+      <ul>
+        <li>Drentse Hondsrug — enige geopark NL</li>
+        <li>Hunebedden & grafheuvels</li>
+        <li>Boomkroonpad (avontuurlijke wandeling)</li>
+        <li>WILDLANDS Adventure Zoo</li>
+        <li>Attractiepark Slagharen</li>
+        <li>Pittoresk dorp Borger</li>
+        <li>Nat. Park Drentsche Aa</li>
+      </ul>
+    </div>
+
+
+    <div class="info-card" style="grid-column:1/-1;">
+      <h3><i class="ti ti-shopping-cart"></i> Supermarkten in de buurt</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:4px 8px 6px 0;color:var(--muted);font-weight:500;">Winkel</th>
+          <th style="text-align:left;padding:4px 8px 6px;color:var(--muted);font-weight:500;">Adres</th>
+          <th style="text-align:left;padding:4px 8px 6px;color:var(--muted);font-weight:500;">Weekend</th>
+          <th style="text-align:left;padding:4px 0 6px;color:var(--muted);font-weight:500;">Afstand</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 Dagwinkel Hoeve</td><td style="padding:6px 8px;color:var(--muted);">Gasselterweg 2, Gasselternijveen</td><td style="padding:6px 8px;color:var(--muted);">Za 08–19 · Zo 09–17</td><td style="padding:6px 0;color:var(--muted);">~1 km</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 Albert Heijn</td><td style="padding:6px 8px;color:var(--muted);">Hoofdstraat 35, Borger</td><td style="padding:6px 8px;color:var(--muted);">Za 08–21 · Zo 08–20</td><td style="padding:6px 0;color:var(--muted);">~8 km</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 Nettorama</td><td style="padding:6px 8px;color:var(--muted);">Grote Brink 11A, Borger</td><td style="padding:6px 8px;color:var(--muted);">Za 08–21 · Zo 09–18</td><td style="padding:6px 0;color:var(--muted);">~8 km</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 ALDI</td><td style="padding:6px 8px;color:var(--muted);">Buinerstraat 8, Borger</td><td style="padding:6px 8px;color:var(--muted);">Za 07–20 · Zo gesloten</td><td style="padding:6px 0;color:var(--muted);">~8 km</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 Jumbo</td><td style="padding:6px 8px;color:var(--muted);">Stationsstraat 37, Gieten</td><td style="padding:6px 8px;color:var(--muted);">Za 08–20 · Zo 12–18</td><td style="padding:6px 0;color:var(--muted);">~10 km</td></tr>
+          <tr><td style="padding:6px 8px 6px 0;font-weight:500;color:var(--text);">🛒 Lidl</td><td style="padding:6px 8px;color:var(--muted);">De Trog 42, Gieten</td><td style="padding:6px 8px;color:var(--muted);">Za 08–20 · Zo 10–18</td><td style="padding:6px 0;color:var(--muted);">~10 km</td></tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT: Checklist -->
+  <div class="col">
+    <div class="col-title"><i class="ti ti-checklist" aria-hidden="true"></i> Meeting agenda & afspraken</div>
+    <div id="sections-container"></div>
+    <button class="btn-add-section" onclick="toggleAddSection()"><i class="ti ti-plus" aria-hidden="true"></i> Nieuw onderwerp toevoegen</button>
+    <div class="add-section-form" id="add-section-form">
+      <div class="form-row">
+        <input type="text" id="new-section-name" placeholder="Naam van het onderwerp" />
+        <select id="new-section-icon">
+          <option value="ti-calendar-event">Programma</option>
+          <option value="ti-users">Mensen</option>
+          <option value="ti-home">Verblijf</option>
+          <option value="ti-clipboard-list">Taken</option>
+          <option value="ti-cash">Kosten</option>
+          <option value="ti-music">Activiteit</option>
+          <option value="ti-car">Vervoer</option>
+          <option value="ti-device-mobile">Contact</option>
+          <option value="ti-star">Overig</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <button class="btn-confirm" onclick="addSection()">Toevoegen</button>
+        <button class="btn-cancel" onclick="toggleAddSection()">Annuleren</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="save-bar">
+  <button class="btn-save" onclick="saveAll()"><i class="ti ti-device-floppy"></i> Opslaan</button>
+  <button class="btn-reset" onclick="resetAll()">Alles wissen</button>
+  <button class="btn-reset" onclick="window.print()" style="display:flex;align-items:center;gap:5px"><i class="ti ti-printer"></i> Afdrukken</button>
+  <span class="save-status" id="save-status"></span>
+</div>
+
+<script>
+const STORAGE_KEY = 'shepherd_weekend_v1';
+
+const sectionData = [
+  { id: 's1', icon: 'ti-door', name: 'Kamerindeling', items: [
+    { label: 'Aantal gezinnen & personen inventariseren', sub: 'Wie zijn er allemaal? Inclusief kinderen.' },
+    { label: 'Kamers verdelen over gezinnen', sub: '12 kamers — elke kamer heeft eigen badkamer' },
+    { label: 'Afstemmen wie bij wie op de kamer slaapt', sub: 'Kinderen samen of bij ouders?' },
+  ]},
+  { id: 's2', icon: 'ti-calendar-event', name: 'Programma vrijdag', items: [
+    { label: 'Aankomsttijden afstemmen', sub: 'Check-in vanaf 16:00 — wie wanneer?' },
+    { label: 'Verjaardagsviering Joah & Djeyfano', sub: 'Cadeaus, verrassing, kaarsjes blazen?' },
+    { label: 'Avondeten Conchata (bami met kip)', sub: 'Hoe laat? Dieetwensen / allergieën melden' },
+    { label: 'Activiteiten na het eten', sub: 'Spelletjes, buiten, muziek?' },
+  ]},
+  { id: 's3', icon: 'ti-sun', name: 'Programma zaterdag', items: [
+    { label: 'Ontbijt — gezamenlijk of zelf regelen?', sub: '' },
+    { label: 'Dagsactiviteit(en) bepalen', sub: 'Zwemmen, uitje, sportveld, wandeling?' },
+    { label: 'Avondeten zaterdag — wie kookt?', sub: 'BBQ, roulatieschema of restaurant?' },
+    { label: 'Avondprogramma', sub: 'Film, spelletjesavond, vuurkorf?' },
+  ]},
+  { id: 's4', icon: 'ti-moon', name: 'Programma zondag', items: [
+    { label: 'Ontbijt — gezamenlijk of zelf?', sub: '' },
+    { label: 'Dagprogramma zondag', sub: 'Vrij, uitje of activiteit?' },
+    { label: 'Avondeten zondag — wie kookt?', sub: '' },
+    { label: 'Afsluiting weekend', sub: 'Borrel, kampvuur, gezamenlijk moment?' },
+  ]},
+  { id: 's6', icon: 'ti-users', name: 'Coördinatie & contact', items: [
+    { label: 'Groepsapp aanmaken of bestaande gebruiken', sub: 'WhatsApp-groep met alle gezinnen' },
+    { label: 'Aanspreekpunt villa aanwijzen', sub: 'Wie regelt contact bij vragen/problemen?' },
+    { label: 'Noodcontactnummers uitwisselen', sub: '' },
+    { label: 'Checkout maandag 10:00 — schema afstemmen', sub: 'Schoonmaakrondje voor vertrek verdelen' },
+  ]},
+  { id: 's7', icon: 'ti-clipboard-list', name: 'Huishoudelijke afspraken', items: [
+    { label: 'Keukengebruik — tijdslots voor drukke momenten', sub: '' },
+    { label: 'Bedtijden kinderen afstemmen', sub: 'Zodat niemand wakker wordt gehouden' },
+    { label: 'Stille uren / rusttijden bepalen', sub: '' },
+    { label: 'Schoonmaaktaken verdelen voor maandag', sub: 'Wie ruimt op voor checkout om 10:00?' },
+  ]},
+  { id: 's8', icon: 'ti-cash', name: 'Kosten & boodschappen betalen', items: [
+    { label: 'Wie doet de grote boodschappen (en wanneer)?', sub: 'Voor of na check-in?' },
+    { label: 'Gezamenlijke pot of per gezin afrekenen?', sub: '' },
+    { label: 'Wie houdt de kosten bij?', sub: 'App zoals Splitwise, of iemand noteert?' },
+  ]},
+];
+
+const groceryData = [
+  { id: 'g1', name: 'Ontbijt', open: true, items: [
+    { name: 'Brood (wit & bruin)', qty: '4 pakken', done: false },
+    { name: 'Beschuit', qty: '3 pakken', done: false },
+    { name: 'Boter', qty: '3 pakken', done: false },
+    { name: 'Jam / hagelslag / pindakaas', qty: 'assortiment', done: false },
+    { name: 'Kaas (gesneden)', qty: '2 pakken', done: false },
+    { name: 'Vleeswaren', qty: 'assortiment', done: false },
+    { name: 'Eieren', qty: '2 dozen', done: false },
+    { name: 'Yoghurt / kwark', qty: '4 bakken', done: false },
+    { name: 'Muesli / cornflakes', qty: '2 dozen', done: false },
+    { name: 'Melk', qty: '6 liter', done: false },
+    { name: 'Sinaasappelsap', qty: '3 liter', done: false },
+    { name: 'Koffie (gemalen)', qty: '1 pak', done: false },
+    { name: 'Thee', qty: '1 doos', done: false },
+    { name: 'Suiker', qty: '1 pak', done: false },
+  ]},
+  { id: 'g2', name: 'Lunch', open: false, items: [
+    { name: 'Brood extra', qty: '4 pakken', done: false },
+    { name: 'Soep (blik/pak)', qty: '6 stuks', done: false },
+    { name: 'Salade mix', qty: '3 zakken', done: false },
+    { name: 'Tomaten / komkommer', qty: 'naar behoefte', done: false },
+    { name: 'Wraps / crackers', qty: '2 pakken', done: false },
+  ]},
+  { id: 'g3', name: 'Diner (za & zo)', open: false, items: [
+    { name: 'Vlees / kip voor BBQ', qty: '3 kg', done: false },
+    { name: 'Vegetarische alternatieven', qty: '1 kg', done: false },
+    { name: 'Pasta / rijst', qty: '2 pakken elk', done: false },
+    { name: 'Sauzen (ketjap, sambal, etc.)', qty: 'assortiment', done: false },
+    { name: 'Groenten (paprika, courgette, ui)', qty: 'naar behoefte', done: false },
+    { name: 'Aardappelen of friet', qty: '3 kg', done: false },
+    { name: 'Zout', qty: '1 pak', done: false },
+    { name: 'Peper', qty: '1 molen', done: false },
+    { name: 'Olie / margarine', qty: '1 fles', done: false },
+  ]},
+  { id: 'g4', name: 'Snacks & tussendoor', open: false, items: [
+    { name: 'Chips / zoutjes', qty: '6 zakken', done: false },
+    { name: 'Noten / studentenhaver', qty: '3 bakken', done: false },
+    { name: 'Fruit (appels, bananen)', qty: '2 zakken', done: false },
+    { name: 'Koek / repen', qty: '3 pakken', done: false },
+    { name: 'Snoep voor kinderen', qty: 'naar smaak', done: false },
+    { name: 'Verjaardagstaart / gebak', qty: '2 stuks', done: false },
+  ]},
+  { id: 'g5', name: 'Dranken', open: false, items: [
+    { name: 'Bier', qty: '2 kratten', done: false },
+    { name: 'Wijn (rood & wit)', qty: '4 flessen', done: false },
+    { name: 'Prosecco / cava', qty: '2 flessen', done: false },
+    { name: 'Frisdrank (cola, sinas, water)', qty: '6 flessen', done: false },
+    { name: 'Limonade voor kinderen', qty: '3 flessen', done: false },
+    { name: 'Mineraalwater', qty: '12 flessen', done: false },
+    { name: 'IJsthee / sportdrank', qty: '3 flessen', done: false },
+  ]},
+  { id: 'g6', name: 'Toilet & hygiëne', open: false, items: [
+    { name: 'WC papier', qty: '4 rollen/kamer', done: false },
+    { name: 'Keukenrol', qty: '6 rollen', done: false },
+    { name: 'Zeep (vloeibaar)', qty: '4 stuks', done: false },
+    { name: 'Douchegel / shampoo', qty: 'eigen meenemen', done: false },
+  ]},
+  { id: 'g7', name: 'Schoonmaak & keuken', open: false, items: [
+    { name: 'Schoonmaakdoekjes', qty: '2 pakken', done: false },
+    { name: 'Vaatwastabletten', qty: '1 pak', done: false },
+    { name: 'Afwasmiddel', qty: '1 fles', done: false },
+    { name: 'Vuilniszakken (groot)', qty: '1 rol', done: false },
+    { name: 'Aluminiumfolie / huishoudfolie', qty: '1 rol elk', done: false },
+    { name: 'Vochtige doekjes (kinderen)', qty: '2 pakken', done: false },
+  ]},
+  { id: 'g8', name: 'Overig / handig', open: false, items: [
+    { name: 'Lucifers / aansteker', qty: '2 stuks', done: false },
+    { name: 'Candles / waxinelichtjes', qty: '1 pak', done: false },
+    { name: 'Servetten', qty: '2 pakken', done: false },
+    { name: 'Wegwerpbekertjes (kinderen)', qty: '1 pak', done: false },
+    { name: 'Algehele EHBO kit', qty: '1 set', done: false },
+  ]},
+];
+
+let chkState = {};
+let grocFilter = 'all';
+
+const dayNotes = {};
+
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('shepherd_darkmode', isDark ? '1' : '0');
+  const btn = document.getElementById('dark-btn');
+  btn.innerHTML = isDark ? '<i class="ti ti-sun"></i> Licht' : '<i class="ti ti-moon"></i> Donker';
+}
+
+function toggleWeather(header) {
+  const body = document.getElementById('weather-body');
+  const chevron = header.querySelector('.chevron-icon');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chevron.classList.toggle('open', !isOpen);
+}
+
+function toggleInfo(header) {
+  const grid = document.getElementById('info-grid');
+  const chevron = header.querySelector('.chevron-icon');
+  const isOpen = grid.style.display !== 'none';
+  grid.style.display = isOpen ? 'none' : 'grid';
+  chevron.classList.toggle('open', !isOpen);
+}
+
+function updateCountdown() {
+  const target = new Date('2026-05-29T14:00:00Z');
+  const diff = target - new Date();
+  if (diff <= 0) {
+    const bar = document.getElementById('countdown-bar');
+    if (bar) bar.innerHTML = '<span class="cd-label" style="font-size:16px">🎉 Het weekend is begonnen! Veel plezier!</span>';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cd-days').textContent = days;
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+}
+
+async function fetchWeather() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.96&longitude=6.92&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Amsterdam&start_date=2026-05-29&end_date=2026-06-01');
+    const d = await r.json();
+    const labels = ['Vrijdag 29/5','Zaterdag 30/5','Zondag 31/5','Maandag 1/6'];
+    const codes = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',80:'🌦️',81:'🌧️',95:'⛈️'};
+    const strip = document.getElementById('weather-strip');
+    strip.innerHTML = d.daily.time.map((_,i) => {
+      const ic = codes[d.daily.weathercode[i]] || '🌡️';
+      const hi = Math.round(d.daily.temperature_2m_max[i]);
+      const lo = Math.round(d.daily.temperature_2m_min[i]);
+      return '<div class="weather-day"><span class="wd-icon">'+ic+'</span><div><div class="wd-label">'+labels[i]+'</div><div class="wd-temp">'+hi+'° / '+lo+'°</div></div></div>';
+    }).join('');
+    document.getElementById('weather-loading').style.display = 'none';
+    strip.style.display = 'flex';
+  } catch(e) {
+    document.getElementById('weather-loading').textContent = 'Weer niet beschikbaar';
+  }
+}
+
+
+function initChkState() {
+  sectionData.forEach(s => {
+    s.items.forEach((it, i) => { chkState[s.id + '_' + i] = false; });
+  });
+}
+
+function saveAll() {
+  ['s2','s3','s4'].forEach(sid => { const el = document.getElementById('note-'+sid); if(el) dayNotes[sid]=el.value; });
+  const payload = {
+    chkState,
+    dayNotes: Object.assign({}, dayNotes),
+    sections: sectionData.map(s => ({ id: s.id, icon: s.icon, name: s.name, _open: s._open, items: s.items })),
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  const el = document.getElementById('save-status');
+  el.textContent = 'Opgeslagen op ' + new Date().toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit'});
+  setTimeout(() => { el.textContent = ''; }, 4000);
+}
+
+function resetAll() {
+  if (!confirm('Weet je zeker dat je alle opgeslagen gegevens wilt wissen?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function loadSaved() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  try {
+    const d = JSON.parse(raw);
+    if (d.chkState) Object.assign(chkState, d.chkState);
+    if (d.sections) {
+      d.sections.forEach(saved => {
+        const s = sectionData.find(x => x.id === saved.id);
+        if (s) { s.items = saved.items; s._open = saved._open; s.name = saved.name; }
+        else sectionData.push({ id: saved.id, icon: saved.icon, name: saved.name, _open: saved._open, items: saved.items });
+      });
+    }
+    if (d.dayNotes) Object.assign(dayNotes, d.dayNotes);
+    return true;
+  } catch(e) { return false; }
+}
+
+function updateProgress() {
+  let total = 0, done = 0;
+  sectionData.forEach(s => {
+    s.items.forEach((_, i) => {
+      total++;
+      if (chkState[s.id + '_' + i]) done++;
+    });
+  });
+  document.getElementById('done-n').textContent = done;
+  document.getElementById('open-n').textContent = total - done;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+}
+
+function renderSections() {
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+  sectionData.forEach((s, si) => {
+    const done = s.items.filter((_, i) => chkState[s.id + '_' + i]).length;
+    const total = s.items.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.innerHTML = `
+      <div class="section-head" onclick="toggleSec('${s.id}')">
+        <i class="ti ${s.icon} section-icon" aria-hidden="true"></i>
+        <span class="section-name">${s.name}</span>
+        <span class="section-prog">${done}/${total}</span>
+        <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
+        <i class="ti ti-chevron-down chevron-icon ${s._open ? 'open' : ''}" id="chev-${s.id}" aria-hidden="true"></i>
+      </div>
+      <div class="section-items ${s._open ? 'open' : ''}" id="items-${s.id}">
+        ${s.items.map((it, i) => s._editing === i ? `
+          <div class="chk-item-editing">
+            <div class="chk-box ${chkState[s.id+'_'+i] ? 'checked' : ''}"></div>
+            <div class="chk-edit-fields">
+              <input id="edit-label-${s.id}-${i}" type="text" value="${it.label.replace(/"/g,'&quot;')}" placeholder="Omschrijving" onkeydown="if(event.key==='Enter') saveEditChk('${s.id}',${i}); if(event.key==='Escape') cancelEditChk('${s.id}')"/>
+              <input id="edit-sub-${s.id}-${i}" type="text" value="${(it.sub||'').replace(/"/g,'&quot;')}" placeholder="Toelichting (optioneel)" onkeydown="if(event.key==='Enter') saveEditChk('${s.id}',${i}); if(event.key==='Escape') cancelEditChk('${s.id}')"/>
+              <div class="chk-edit-actions">
+                <button class="chk-edit-save" onclick="saveEditChk('${s.id}',${i})">Opslaan</button>
+                <button class="chk-edit-cancel" onclick="cancelEditChk('${s.id}')">Annuleren</button>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="chk-item ${chkState[s.id+'_'+i] ? 'done' : ''}" onclick="toggleChk('${s.id}', ${i})">
+            <div class="chk-box ${chkState[s.id+'_'+i] ? 'checked' : ''}"></div>
+            <div style="flex:1">
+              <div class="chk-label">${it.label}</div>
+              ${it.sub ? `<div class="chk-sub">${it.sub}</div>` : ''}
+            </div>
+            <i class="ti ti-pencil chk-edit-icon" onclick="startEditChk(event,'${s.id}',${i})" title="Bewerken" aria-label="Bewerk item"></i>
+            <i class="ti ti-x chk-del" onclick="delChkItem(event,'${s.id}',${i})" title="Verwijderen" aria-label="Verwijder item"></i>
+          </div>
+        `).join('')}
+        ${['s2','s3','s4'].includes(s.id) ? `<div class="day-note"><label>📝 Notities voor ${s.name.toLowerCase()}</label><textarea id="note-${s.id}" placeholder="Losse notities, ideeën, afspraken..." onchange="dayNotes['${s.id}']=this.value">${dayNotes[s.id]||''}</textarea></div>` : ''}
+        <div class="add-item-row">
+          <input type="text" placeholder="Nieuw punt toevoegen..." id="new-item-${s.id}" onkeydown="if(event.key==='Enter') addChkItem('${s.id}')" />
+          <button class="btn-add-item" onclick="addChkItem('${s.id}')"><i class="ti ti-plus" aria-hidden="true"></i> Toevoegen</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function toggleSec(id) {
+  const s = sectionData.find(x => x.id === id);
+  if (s) s._open = !s._open;
+  renderSections();
+}
+
+function toggleChk(sid, idx) {
+  const key = sid + '_' + idx;
+  chkState[key] = !chkState[key];
+  renderSections();
+  updateProgress();
+  const s = sectionData.find(x => x.id === sid);
+  if (s) s._open = true;
+}
+
+function delChkItem(e, sid, idx) {
+  e.stopPropagation();
+  const s = sectionData.find(x => x.id === sid);
+  if (!s) return;
+  s.items.splice(idx, 1);
+  const newState = {};
+  Object.keys(chkState).forEach(k => {
+    if (!k.startsWith(sid + '_')) newState[k] = chkState[k];
+  });
+  s.items.forEach((_, i) => { newState[sid + '_' + i] = chkState[sid + '_' + (i >= idx ? i + 1 : i)] || false; });
+  chkState = newState;
+  s._open = true;
+  renderSections();
+  updateProgress();
+}
+
+function addChkItem(sid) {
+  const input = document.getElementById('new-item-' + sid);
+  const val = input.value.trim();
+  if (!val) return;
+  const s = sectionData.find(x => x.id === sid);
+  if (!s) return;
+  s.items.push({ label: val, sub: '' });
+  chkState[sid + '_' + (s.items.length - 1)] = false;
+  s._open = true;
+  input.value = '';
+  renderSections();
+  updateProgress();
+}
+
+function startEditChk(e, sid, idx) {
+  e.stopPropagation();
+  const s = sectionData.find(x => x.id === sid);
+  if (!s) return;
+  const it = s.items[idx];
+  s._editing = idx;
+  s._open = true;
+  renderSections();
+}
+
+function saveEditChk(sid, idx) {
+  const s = sectionData.find(x => x.id === sid);
+  if (!s) return;
+  const labelEl = document.getElementById('edit-label-' + sid + '-' + idx);
+  const subEl = document.getElementById('edit-sub-' + sid + '-' + idx);
+  if (labelEl && labelEl.value.trim()) s.items[idx].label = labelEl.value.trim();
+  if (subEl) s.items[idx].sub = subEl.value.trim();
+  s._editing = null;
+  s._open = true;
+  renderSections();
+}
+
+function cancelEditChk(sid) {
+  const s = sectionData.find(x => x.id === sid);
+  if (s) { s._editing = null; s._open = true; }
+  renderSections();
+}
+
+function toggleAddSection() {
+  const form = document.getElementById('add-section-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) document.getElementById('new-section-name').focus();
+}
+
+function addSection() {
+  const name = document.getElementById('new-section-name').value.trim();
+  const icon = document.getElementById('new-section-icon').value;
+  if (!name) return;
+  const id = 's' + Date.now();
+  sectionData.push({ id, icon, name, items: [], _open: true });
+  document.getElementById('new-section-name').value = '';
+  document.getElementById('add-section-form').classList.remove('open');
+  renderSections();
+  updateProgress();
+}
+
+function renderGroceries() {
+  const container = document.getElementById('grocery-container');
+  container.innerHTML = '';
+  groceryData.forEach((cat, ci) => {
+    const filtItems = cat.items.filter(it => {
+      if (grocFilter === 'open') return !it.done;
+      if (grocFilter === 'done') return it.done;
+      return true;
+    });
+    const card = document.createElement('div');
+    card.className = 'grocery-cat';
+    card.innerHTML = `
+      <div class="grocery-cat-head" onclick="toggleGCat('${cat.id}')">
+        <i class="ti ti-basket section-icon" aria-hidden="true"></i>
+        <span class="grocery-cat-name">${cat.name}</span>
+        <span class="grocery-count">${cat.items.filter(x=>!x.done).length} nog halen</span>
+        <i class="ti ti-chevron-down chevron-icon ${cat.open ? 'open' : ''}" aria-hidden="true"></i>
+      </div>
+      <div class="grocery-items ${cat.open ? 'open' : ''}">
+        ${filtItems.map((it, fi) => {
+          const realIdx = cat.items.indexOf(it);
+          return `<div class="grocery-item ${it.done ? 'done' : ''}" id="git-${cat.id}-${realIdx}">
+            <div class="chk-box ${it.done ? 'checked' : ''}" onclick="toggleGItem('${cat.id}',${realIdx})" style="cursor:pointer"></div>
+            <span class="gitem-name" ondblclick="editGItem('${cat.id}',${realIdx})">${it.name}</span>
+            <span class="gitem-qty" ondblclick="editGItem('${cat.id}',${realIdx})">${it.qty}</span>
+            <div class="gitem-edit">
+              <input class="name-in" type="text" value="${it.name}" id="gn-${cat.id}-${realIdx}" onkeydown="if(event.key==='Enter') saveGItem('${cat.id}',${realIdx})"/>
+              <input class="qty-in" type="text" value="${it.qty}" id="gq-${cat.id}-${realIdx}" onkeydown="if(event.key==='Enter') saveGItem('${cat.id}',${realIdx})"/>
+              <button onclick="saveGItem('${cat.id}',${realIdx})">Ok</button>
+            </div>
+            <i class="ti ti-x g-del" onclick="delGItem('${cat.id}',${realIdx})" title="Verwijder" aria-label="Verwijder boodschap"></i>
+          </div>`;
+        }).join('')}
+        <div class="add-grocery-row">
+          <input class="name-in" type="text" placeholder="Product toevoegen..." id="gnew-${cat.id}" onkeydown="if(event.key==='Enter') addGItem('${cat.id}')" />
+          <input class="qty-in" type="text" placeholder="Hoeveelheid" id="gqnew-${cat.id}" onkeydown="if(event.key==='Enter') addGItem('${cat.id}')" />
+          <button onclick="addGItem('${cat.id}')"><i class="ti ti-plus" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function toggleGCat(id) {
+  const cat = groceryData.find(x => x.id === id);
+  if (cat) cat.open = !cat.open;
+  renderGroceries();
+}
+
+function toggleGItem(cid, idx) {
+  const cat = groceryData.find(x => x.id === cid);
+  if (!cat) return;
+  cat.items[idx].done = !cat.items[idx].done;
+  renderGroceries();
+}
+
+function editGItem(cid, idx) {
+  const el = document.getElementById('git-' + cid + '-' + idx);
+  if (el) el.classList.add('editing');
+  const ni = document.getElementById('gn-' + cid + '-' + idx);
+  if (ni) { ni.focus(); ni.select(); }
+}
+
+function saveGItem(cid, idx) {
+  const cat = groceryData.find(x => x.id === cid);
+  if (!cat) return;
+  const n = document.getElementById('gn-' + cid + '-' + idx)?.value.trim();
+  const q = document.getElementById('gq-' + cid + '-' + idx)?.value.trim();
+  if (n) cat.items[idx].name = n;
+  if (q !== undefined) cat.items[idx].qty = q;
+  renderGroceries();
+}
+
+function delGItem(cid, idx) {
+  const cat = groceryData.find(x => x.id === cid);
+  if (!cat) return;
+  cat.items.splice(idx, 1);
+  renderGroceries();
+}
+
+function addGItem(cid) {
+  const cat = groceryData.find(x => x.id === cid);
+  if (!cat) return;
+  const n = document.getElementById('gnew-' + cid)?.value.trim();
+  const q = document.getElementById('gqnew-' + cid)?.value.trim() || '';
+  if (!n) return;
+  cat.items.push({ name: n, qty: q, done: false });
+  cat.open = true;
+  renderGroceries();
+}
+
+function addGroceryCat() {
+  const name = prompt('Naam van de nieuwe categorie:');
+  if (!name) return;
+  groceryData.push({ id: 'g' + Date.now(), name: name.trim(), open: true, items: [] });
+  renderGroceries();
+}
+
+function setFilter(f, btn) {
+  grocFilter = f;
+  document.querySelectorAll('.gfilter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGroceries();
+}
+
+
+
+// Respect saved dark preference (default is dark via body class)
+const savedDark = localStorage.getItem('shepherd_darkmode');
+if (savedDark === '0') {
+  document.body.classList.remove('dark');
+  const btn = document.getElementById('dark-btn');
+  if (btn) btn.innerHTML = '<i class="ti ti-moon"></i> Donker';
+}
+initChkState();
+sectionData.forEach(s => { s._open = false; });
+loadSaved();
+renderSections();
+updateCountdown();
+setInterval(updateCountdown, 30000);
+fetchWeather();
+</script>
+</body>
+</html>
